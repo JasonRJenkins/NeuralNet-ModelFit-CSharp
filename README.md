@@ -12,7 +12,9 @@ The same three datasets used by the C++ version have been included: Auto.csv; Cr
 1) Using the Auto.csv dataset the relationship between 'horsepower' and 'mpg' can be modelled using the following settings:
 
 Predictor Variable (X) = horsepower, Response Variable (Y) = mpg
+
 Output Layer: Activation Function = Elliot, Slope = 35, Amplify = 1
+
 Hidden Layer: Activation Function = ISRU, Slope = 5, Amplify = 40
 
 The Main Settings should be left with their default values. In this example the application will converge to a solution very quickly.
@@ -20,7 +22,9 @@ The Main Settings should be left with their default values. In this example the 
 2) Using the Credit.csv dataset the relationship between 'Balance' and 'Rating' can be modelled using the following settings:
 
 Predictor Variable (X) = Balance, Response Variable (Y) = Rating
+
 Output Layer: Activation Function = Elliot, Slope = 10, Amplify = 1
+
 Hidden Layer: Activation Function = SoftPlus, Slope = 10, Amplify = 10
 
 In the Main Settings set the Min. Network Error to 600, the Scale Factor to 2000 and leave all the other settings with their default values. This example will also converge to a solution fairly quickly
@@ -28,7 +32,9 @@ In the Main Settings set the Min. Network Error to 600, the Scale Factor to 2000
 3) Using the Wage.csv dataset the relationship between 'age' and 'wage' can be modelled using the following settings:
 
 Predictor Variable (X) = age, Response Variable (Y) = wage
+
 Output Layer: Activation Function = Elliot, Slope = 10, Amplify = 1
+
 Hidden Layer: Activation Function = SoftPlus, Slope = 10, Amplify = 10
 
 In the Main Settings set the Min. Network Error to 2500, the Scale Factor to 1000, the Number of Iterations to 10000 and leave all the other settings with their default values. This example will converge to a solution fairly slowly owing to the large size of the dataset in comparison to the other examples.
