@@ -37,7 +37,7 @@ Output Layer: Activation Function = Elliot, Slope = 10, Amplify = 1
 
 Hidden Layer: Activation Function = SoftPlus, Slope = 10, Amplify = 10
 
-In the Main Settings set the Min. Network Error to 2500, the Scale Factor to 1000, the Number of Iterations to 10000 and leave all the other settings with their default values. In comparison to the other examples this example will converge to a solution fairly slowly owing to the large size of the dataset.
+In the Main Settings set the Min. Network Error to 2450, the Scale Factor to 1000, the Number of Iterations to 10000 and leave all the other settings with their default values. In comparison to the other examples this example will converge to a solution fairly slowly owing to the large size of the dataset.
 
 N.B. If you load a dataset with more than 12 columns, using the default form size, you will have to increase the width of the form in order to see the data correctly in the Data Preview control as the table will wrap onto the next line of the control if it is not wide enough.
 
