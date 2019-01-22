@@ -116,12 +116,13 @@ namespace ModelFit
             // 
             // DataFileTBox
             // 
-            this.DataFileTBox.Enabled = false;
             this.DataFileTBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DataFileTBox.Location = new System.Drawing.Point(20, 31);
             this.DataFileTBox.Name = "DataFileTBox";
+            this.DataFileTBox.ReadOnly = true;
             this.DataFileTBox.Size = new System.Drawing.Size(429, 20);
-            this.DataFileTBox.TabIndex = 1;
+            this.DataFileTBox.TabIndex = 49;
+            this.ModelFitToolTip.SetToolTip(this.DataFileTBox, "displays the full name and path of the data file");
             // 
             // label1
             // 
