@@ -58,18 +58,18 @@ namespace Data.Table
         private List<string> mColumnNames = new List<string>();
 
         /// <summary>
-        /// the raw table data - each row is a vector of column values in string format
-        /// and the table consists of a vector of rows
+        /// the raw table data - each row is a list of column values in string format
+        /// and the table consists of a list of rows
         /// </summary>
         private List<List<string>> mRawData = new List<List<string>>();
 
         /// <summary>
         /// keeps track of the automatic alias values used by each column
         /// </summary>
-        private List<double> mAliasVec = new List<double>();
+        private List<double> mAliasLst = new List<double>();
 
         /// <summary>
-        /// maps a string column name to a corresponding numeric vector index
+        /// maps a string column name to a corresponding numeric list index
         /// </summary>
         private Dictionary<string, int> mColIdx = new Dictionary<string, int>();
 
@@ -107,7 +107,7 @@ namespace Data.Table
             // initialise the alias list values to zero
             for (int i = 0; i < mCols; i++)
 	        {
-		        mAliasVec.Add(0);
+		        mAliasLst.Add(0);
 	        }
         }
 
@@ -172,7 +172,7 @@ namespace Data.Table
             mRawData.Clear();
             mColIdx.Clear();
             mAliases.Clear();
-            mAliasVec.Clear();
+            mAliasLst.Clear();
         }
 
         /// <summary>
@@ -191,11 +191,11 @@ namespace Data.Table
 		        mRows = 0;
 		        mCols = row.Count;
 
-		        // initialise the alias vector values to zero
+		        // initialise the alias list values to zero
 		        for (int i = 0; i < mCols; i++)
 		        {
 			        // this keeps track of the automatic alias values used by each column
-			        mAliasVec.Add(0);
+			        mAliasLst.Add(0);
 		        }
             }
 
@@ -299,8 +299,8 @@ namespace Data.Table
                     catch
 			        {
                         // assign non-numeric column values integer values starting with zero
-                        value = mAliasVec[i];          // this list has initial values set to 0
-                        mAliasVec[i] = value + 1;      // the next value to use
+                        value = mAliasLst[i];          // this list has initial values set to 0
+                        mAliasLst[i] = value + 1;      // the next value to use
 
                         // create and add the value-alias to the aliases map
                         string strAlias = value.ToString();
@@ -427,8 +427,8 @@ namespace Data.Table
                     catch
 			        {
                         // assign non-numeric column values integer values starting with zero
-                        value = mAliasVec[nCol];          // this list has initial values set to 0
-                        mAliasVec[nCol] = value + 1;      // the next value to use
+                        value = mAliasLst[nCol];          // this list has initial values set to 0
+                        mAliasLst[nCol] = value + 1;      // the next value to use
 
                         // create and add the value-alias to the aliases map
                         string strAlias = value.ToString();
@@ -651,7 +651,7 @@ namespace Data.Table
             // initialise the alias list values to zero
             for (int i = 0; i < mCols; i++)
 	        {
-		        mAliasVec.Add(0);
+		        mAliasLst.Add(0);
 	        }
 
 	        // check to see if there was an error reading the file
