@@ -43,7 +43,6 @@ namespace ModelFit
             this.label1 = new System.Windows.Forms.Label();
             this.FileBrowseBtn = new System.Windows.Forms.Button();
             this.FitModelBtn = new System.Windows.Forms.Button();
-            this.DataPreviewRTBox = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.XlistBox = new System.Windows.Forms.ListBox();
             this.YlistBox = new System.Windows.Forms.ListBox();
@@ -94,6 +93,7 @@ namespace ModelFit
             this.ExcelOutputCkBox = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tableDataGridView = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OutAmpNumUpDwn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutSlopeNumUpDwn)).BeginInit();
@@ -112,6 +112,7 @@ namespace ModelFit
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tableDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // DataFileTBox
@@ -158,22 +159,6 @@ namespace ModelFit
             this.FitModelBtn.UseVisualStyleBackColor = true;
             this.FitModelBtn.Click += new System.EventHandler(this.FitModelBtn_Click);
             // 
-            // DataPreviewRTBox
-            // 
-            this.DataPreviewRTBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DataPreviewRTBox.Location = new System.Drawing.Point(20, 84);
-            this.DataPreviewRTBox.Name = "DataPreviewRTBox";
-            this.DataPreviewRTBox.ReadOnly = true;
-            this.DataPreviewRTBox.Size = new System.Drawing.Size(950, 103);
-            this.DataPreviewRTBox.TabIndex = 5;
-            this.DataPreviewRTBox.TabStop = false;
-            this.DataPreviewRTBox.Text = "";
-            this.ModelFitToolTip.SetToolTip(this.DataPreviewRTBox, "displays the first 100 lines of the data file - the last two rows contain the min" +
-        " and max values");
-            this.DataPreviewRTBox.TextChanged += new System.EventHandler(this.XlistBox_SelectedIndexChanged);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -183,6 +168,8 @@ namespace ModelFit
             this.label2.Size = new System.Drawing.Size(83, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Data Preview";
+            this.ModelFitToolTip.SetToolTip(this.label2, "displays the first 100 lines of the data file - the last two rows contain the min" +
+        " and max values");
             // 
             // XlistBox
             // 
@@ -885,11 +872,26 @@ namespace ModelFit
             this.groupBox6.TabIndex = 44;
             this.groupBox6.TabStop = false;
             // 
+            // tableDataGridView
+            // 
+            this.tableDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableDataGridView.Location = new System.Drawing.Point(23, 84);
+            this.tableDataGridView.Name = "tableDataGridView";
+            this.tableDataGridView.ReadOnly = true;
+            this.tableDataGridView.Size = new System.Drawing.Size(947, 102);
+            this.tableDataGridView.TabIndex = 50;
+            this.ModelFitToolTip.SetToolTip(this.tableDataGridView, "displays the first 100 lines of the data file - the last two rows contain the min" +
+        " and max values");
+            // 
             // ModelFitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(992, 496);
+            this.Controls.Add(this.tableDataGridView);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -904,7 +906,6 @@ namespace ModelFit
             this.Controls.Add(this.YlistBox);
             this.Controls.Add(this.XlistBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.DataPreviewRTBox);
             this.Controls.Add(this.FitModelBtn);
             this.Controls.Add(this.FileBrowseBtn);
             this.Controls.Add(this.label1);
@@ -937,6 +938,7 @@ namespace ModelFit
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tableDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -948,7 +950,6 @@ namespace ModelFit
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button FileBrowseBtn;
         private System.Windows.Forms.Button FitModelBtn;
-        private System.Windows.Forms.RichTextBox DataPreviewRTBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox XlistBox;
         private System.Windows.Forms.ListBox YlistBox;
@@ -999,6 +1000,7 @@ namespace ModelFit
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button SaveNetworkBtn;
         private System.Windows.Forms.CheckBox ExcelOutputCkBox;
+        private System.Windows.Forms.DataGridView tableDataGridView;
     }
 }
 

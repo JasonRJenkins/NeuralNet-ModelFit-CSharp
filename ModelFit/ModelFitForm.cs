@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
+using System.Data;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -79,6 +79,7 @@ namespace ModelFit
         /// N.B. values between 0.001 and 10 have been reported as working 
         /// successfully.
         /// </summary>
+        /// 
         public double LearnConst
         {
             get { return (double)LearnConstNumUpDwn.Value; }
@@ -94,6 +95,7 @@ namespace ModelFit
         /// next step of the search will always proceed down the steepest path
         /// of the error surface.
         /// </summary>
+        /// 
         public double Momentum
         {
             get { return (double)MomentNumUpDwn.Value; }
@@ -107,6 +109,7 @@ namespace ModelFit
         /// Gaussian; Arctan; Sine; Cosine; Sinc; Elliot; Linear; ISRU; SoftSign
         /// and SoftPlus.
         /// </summary>
+        /// 
         public ActiveT OutputFunction
         {
             get { return (ActiveT)OutFuncListBox.SelectedIndex; }
@@ -120,6 +123,7 @@ namespace ModelFit
         /// Gaussian; Arctan; Sine; Cosine; Sinc; Elliot; Linear; ISRU; SoftSign
         /// and SoftPlus.
         /// </summary>
+        /// 
         public ActiveT HiddenFunction
         {
             get { return (ActiveT)HidFuncListBox.SelectedIndex; }
@@ -132,6 +136,7 @@ namespace ModelFit
         /// This property can be used to adjust the sensitivity 
         /// of the output layer neurons activation function.
         /// </summary>
+        /// 
         public double OutputSlope
         {
             get { return (double)OutSlopeNumUpDwn.Value; }
@@ -144,6 +149,7 @@ namespace ModelFit
         /// This property can be used to adjust the sensitivity 
         /// of the hidden layer neurons activation function.
         /// </summary>
+        /// 
         public double HiddenSlope
         {
             get { return (double)HidSlopeNumUpDwn.Value; }
@@ -156,6 +162,7 @@ namespace ModelFit
         /// This property can be used to boost or reduce the 
         /// output layer neurons signal.
         /// </summary>
+        /// 
         public double OutputAmplify
         {
             get { return (double)OutAmpNumUpDwn.Value; }
@@ -168,6 +175,7 @@ namespace ModelFit
         /// This property can be used to boost or reduce the 
         /// hidden layer neurons signal.
         /// </summary>
+        /// 
         public double HiddenAmplify
         {
             get { return (double)HidAmpNumUpDwn.Value; }
@@ -180,6 +188,7 @@ namespace ModelFit
         /// If a solution has not been found the search will terminate once 
         /// this value has been exceeded.
         /// </summary>
+        /// 
         public int NumIterations
         {
             get { return (int)NumIterNumUpDwn.Value; }
@@ -193,6 +202,7 @@ namespace ModelFit
         /// N.B. too low a value can lead to overtraining which can lock
         /// the network in a final state that is difficult to generalise from.
         /// </summary>
+        /// 
         public double MinNetError
         {
             get { return (double)MinNetErrNumUpDwn.Value; }
@@ -207,6 +217,7 @@ namespace ModelFit
         /// 3 represents -1.5 to +1.5 and 4 represents -2 to +2 etc.
         /// N.B. randomising within the range -2 to +2 is usually sufficient.
         /// </summary>
+        /// 
         public double InitRange
         {
             get { return (double)InitRangeNumUpDwn.Value; }
@@ -216,6 +227,7 @@ namespace ModelFit
         /// <summary>
         /// The number of units in the hidden layer.
         /// </summary>
+        /// 
         public int NumberOfHiddenUnits
         {
             get { return (int)UnitsNumUpDwn.Value; }
@@ -228,6 +240,7 @@ namespace ModelFit
         /// Scaling the magnitude of the data values so that they fall
         /// within the range: 0-1 can improve the model fit.
         /// </summary>
+        /// 
         private double ScaleFactor
         {
             get { return (double)ScaleNumUpDwn.Value; }
@@ -237,6 +250,7 @@ namespace ModelFit
         /// <summary>
         /// The name of data file (including the full path).
         /// </summary>
+        /// 
         public string DataFile
         {
             get { return DataFileTBox.Text; }
@@ -246,6 +260,7 @@ namespace ModelFit
         /// <summary>
         /// Set to true if the data file has a header row
         /// </summary>
+        /// 
         public bool HasHeader
         {
             get { return HeaderCkBox.Checked; }
@@ -255,6 +270,7 @@ namespace ModelFit
         /// <summary>
         /// The data table column index of the selected predictor variable (X).
         /// </summary>
+        /// 
         private int PredictorIdx
         {
             get { return XlistBox.SelectedIndex; }
@@ -264,6 +280,7 @@ namespace ModelFit
         /// <summary>
         /// The data table column index of the selected response variable (Y).
         /// </summary>
+        /// 
         private int ResponseIdx
         {
             get { return YlistBox.SelectedIndex; }
@@ -277,6 +294,7 @@ namespace ModelFit
         /// <summary>
         /// Default constructor
         /// </summary>
+        /// 
         public ModelFitForm()
         {
             InitializeComponent();
@@ -338,9 +356,15 @@ namespace ModelFit
             // re-load the CSV file (if selected) to reflect the change in header status
             if (DataFile.Length > 0)
             {
+                // display the wait cursor
+                Cursor.Current = Cursors.WaitCursor;
+
                 LoadData(DataFile);
                 PopulateVariableListBoxes();
-            }                        
+
+                // reset the cursor
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         /////////////////////////////////////////////////////////////////////
@@ -718,7 +742,9 @@ namespace ModelFit
                 StreamWriter ofstream = new StreamWriter(fname);
 
                 // output the column titles
-                ofstream.WriteLine("input,target,model");
+                List<string> colNames = new List<string>();
+                mDataTab.GetColumnNames(colNames);
+                ofstream.WriteLine(colNames[PredictorIdx].Trim() + "," + colNames[ResponseIdx].Trim() + ",model");
 
                 for (int i = 0; i < mInputVecs.Count; i++)
                 {
@@ -759,7 +785,7 @@ namespace ModelFit
         /// </summary>
         /// <param name="net">the trained neural network</param>
         /// <param name="fname">the name of the file to write the results to</param>
-        /// //
+        ///
         private void GenerateExcelOutput(NeuralNet net, string fname)
         {
             List<double> dX = new List<double>();
@@ -848,6 +874,7 @@ namespace ModelFit
         /// the data is also produced.
         /// </summary>
         /// <param name="net">the trained neural network</param>
+        /// 
         private void ShowOutputInExcel(NeuralNet net)
         {
             List<double> dX = new List<double>();
@@ -950,6 +977,7 @@ namespace ModelFit
         /// Formats the graph title for the Excel plot.
         /// </summary>
         /// <returns>the formatted graph title</returns>
+        /// 
         private String GraphTitle()
         {
             // extract the variable names and make them lowercase
@@ -979,9 +1007,9 @@ namespace ModelFit
         /// Loads the selected data file into an internal DataTable object.
         ///
         /// The first 100 lines of the data file are also written to a table and
-        /// displayed in the form's rich text box data preview control. The 
-        /// predictor and response variables list boxes are also populated with
-        /// the data file column headings.
+        /// displayed in the form's data preview data grid control. The predictor
+        /// and response variables list boxes are also populated with the data 
+        /// file column headings.
         /// </summary>
         /// <param name="filename">the full name, including path, of the data file</param>
         /// 
@@ -995,6 +1023,15 @@ namespace ModelFit
             {
                 MessageBox.Show("The selected file does not appear to be in the correct format.",
                                 "ModelFit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // clear the filename textbox, the data preview control and the variables list boxes
+                this.DataFileTBox.Clear();
+                this.tableDataGridView.DataSource = null;
+                this.XlistBox.Items.Clear();
+                this.YlistBox.Items.Clear();
+
+                // update the information text label
+                this.InfoLabel.Text = "Please select a data file";
             }
             else
             {
@@ -1002,9 +1039,8 @@ namespace ModelFit
                 DataFile = filename;
 
                 // populate the data preview
-                this.DataPreviewRTBox.Clear();
-                this.DataPreviewRTBox.Rtf = InsertPreviewTableInRTBox(1000);
-                
+                PopulateTableGridView();
+
                 // populate the x and y variable list boxes
                 PopulateVariableListBoxes();
 
@@ -1014,23 +1050,39 @@ namespace ModelFit
         }
 
         /// <summary>
-        /// Adds the first 100 lines of the input data file to a rich text format table.
+        /// Populates the preview data grid view with the first 100 lines of the 
+        /// selected data file.
         /// </summary>
-        /// <param name="width">the width of the cells in the rtf table</param>
-        /// <returns>a string representation of the rtf table</returns>
         /// 
-        private String InsertPreviewTableInRTBox(int width)
+        private void PopulateTableGridView()
         {
-            // use a string builder to create the preview table
-            StringBuilder sringTableRtf = new StringBuilder();
+            // create a new data source for the grid view
+            var dt = new DataTable();
 
-            // begin the rich text formatting
-            sringTableRtf.Append(@"{\rtf1 ");
+            // add the data file column names to the new data source
+            List<string> colNames = new List<string>();
+            mDataTab.GetColumnNames(colNames);
 
-            // add the DataTable column headings to the start of preview table
-            AddColumnNamesToRtfTable(sringTableRtf, width);
+            if (colNames.Count > 0)
+            {
+                // use the data file column names
+                for (int j = 0; j < mDataTab.NumCols; j++)
+                {
+                    string columnName = colNames[j];
+                    dt.Columns.Add(columnName.Trim());
+                }
+            }
+            else
+            {
+                // use generic column names
+                for (int i = 0; i < mDataTab.NumCols; i++)
+                {
+                    string columnName = "Column " + (i + 1).ToString();
+                    dt.Columns.Add(columnName.Trim());
+                }
+            }
 
-            // populate the preview table with up to the first 100 rows of the DataTable
+            // populate the new data source with up to the first 100 rows of the data file
             int numRows = 100;
 
             if (mDataTab.NumRows < 100)
@@ -1039,124 +1091,32 @@ namespace ModelFit
                 numRows = mDataTab.NumRows;
             }
 
-            // variable for cell width
-            int cellWidth;
-
+            // add the data file rows to the new data source
             for (int i = 0; i < numRows; i++)
             {
-                // start the table row
-                sringTableRtf.Append(@"\trowd");
-
                 // get the row data
                 List<double> row = new List<double>();
                 mDataTab.GetNumericRow(i, row);
 
+                string[] line = new string[mDataTab.NumCols];
+
                 for (int j = 0; j < mDataTab.NumCols; j++)
                 {
-                    // create a cell with the required width
-                    cellWidth = (j + 1) * width;
-
-                    // set the cell width
-                    sringTableRtf.Append(@"\cellx" + cellWidth.ToString());
-
                     // populate the row cells
                     string colVal = row[j].ToString();
-
-                    // only show at most 9 significant figures (to fit the cell width)
-                    if (colVal.Length > 9)
-                    {
-                        colVal = row[j].ToString("G9");
-                    }
-
-                    if (j == 0)
-                    {
-                        sringTableRtf.Append(@"\intbl  " + colVal);
-                    }
-                    else
-                    {                        
-                        sringTableRtf.Append(@"\cell  " + colVal);
-                    }
+                    line[j] = colVal;
                 }
 
-                // end the table row
-                sringTableRtf.Append(@"\intbl \cell \row");
+                // add the row
+                dt.Rows.Add(line);
             }
 
-            // add the minimum and maximum values found in each column to the end of the table
-            AddMinMaxValuesToRtfTable(sringTableRtf, width);
-
-            // add the DataTable column headings to the end preview table
-            AddColumnNamesToRtfTable(sringTableRtf, width);
-
-            // close rich text formatting
-            sringTableRtf.Append(@"\pard");
-            sringTableRtf.Append(@"}");
-
-            // convert the string builder to string
-            return sringTableRtf.ToString();
-        }
-
-        /// <summary>
-        /// Adds the DataTable column headings to the RTF preview table.
-        /// </summary>
-        /// <param name="sTableRTF">the rtf table string builder</param>
-        /// <param name="width">the width of the cells in the rtf table</param>        
-        ///
-        private void AddColumnNamesToRtfTable(StringBuilder sTableRTF, int width)
-        {
-            // populate the preview table header from the DataTable column headings
-            List<string> colNames = new List<string>();
-            mDataTab.GetColumnNames(colNames);
-
-            if (colNames.Count > 0)
-            {
-                // start the row
-                sTableRTF.Append(@"\trowd");
-
-                for (int j = 0; j < mDataTab.NumCols; j++)
-                {
-                    // create a cell with the required width
-                    sTableRTF.Append(@"\cellx" + ((j + 1) * width).ToString());
-
-                    string columnName = colNames[j];
-
-                    // truncate the name if it is too long to fit inside a table cell
-                    if (columnName.Length > 12)
-                    {
-                        columnName = columnName.Substring(0, 12);
-                    }
-
-                    if (j == 0)
-                    {
-                        sTableRTF.Append(@"\intbl  " + columnName);
-                    }
-                    else
-                    {
-                        sTableRTF.Append(@"\cell  " + columnName);
-                    }
-                }
-
-                // add the table header row
-                sTableRTF.Append(@"\intbl \cell \row");
-            }
-        }
-
-        /// <summary>
-        /// Adds the minimum and maximum values from each DataTable column to
-        /// the relevant column of the RTF preview table.
-        /// </summary>
-        /// <param name="sTableRTF">the rtf table string builder</param>
-        /// <param name="width">the width of the cells in the rtf table</param>
-        private void AddMinMaxValuesToRtfTable(StringBuilder sTableRTF, int width)
-        {
-            int cellWidth;            
+            // add two rows to the new data source containing the minimum and maximum column values
             List<double> column = new List<double>();
-
-            // add rows to the rtf table containing the minimum and maximum column values
+            
             for (int i = 0; i < 2; i++)
             {
-                // start the table row
-                sTableRTF.Append(@"\trowd");
+                string[] line = new string[mDataTab.NumCols];
 
                 for (int j = 0; j < mDataTab.NumCols; j++)
                 {
@@ -1177,38 +1137,21 @@ namespace ModelFit
                         minMaxvalue = column.Max();
                     }
 
-                    // create a cell with the required width
-                    cellWidth = (j + 1) * width;
-
-                    // set the cell width
-                    sTableRTF.Append(@"\cellx" + cellWidth.ToString());
-
                     // populate the row cells
                     string colVal = minMaxvalue.ToString();
-
-                    // only show at most 9 significant figures (to fit the cell width)
-                    if (colVal.Length > 9)
-                    {
-                        colVal = minMaxvalue.ToString("G9");
-                    }
-
-                    if (j == 0)
-                    {
-                        sTableRTF.Append(@"\intbl  " + colVal);
-                    }
-                    else
-                    {
-                        sTableRTF.Append(@"\cell  " + colVal);
-                    }
+                    line[j] = colVal;
                 }
 
-                // end the table row
-                sTableRTF.Append(@"\intbl \cell \row");
+                // add the row
+                dt.Rows.Add(line);
             }
+
+            // attach the new data source to the grid view
+            tableDataGridView.DataSource = dt;
         }
 
         /// <summary>
-        /// Populates the form's Activation List boxes with the available 
+        /// Populates the form's Activation function list boxes with the available 
         /// values of the ActiveT enumerated type.
         /// </summary>
         /// 
@@ -1244,7 +1187,7 @@ namespace ModelFit
         }
 
         /// <summary>
-        /// Populates the forms predictor and response variables 
+        /// Populates the forms Predictor and Response variables 
         /// list boxes with the data file column headings.
         /// </summary>
         /// 
