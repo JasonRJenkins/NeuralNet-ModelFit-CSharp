@@ -1,5 +1,5 @@
 # NeuralNet-ModelFit-CSharp
-Implements a feedforward neural network and uses it to fit a simple model to a number of datasets.
+Implements a single hidden layer feedforward neural network and uses it to fit a model to a selectable dataset.
 
 This is a C# version of the NeuralNet-ModelFit project - https://github.com/JasonRJenkins/NeuralNet-ModelFit.
 
