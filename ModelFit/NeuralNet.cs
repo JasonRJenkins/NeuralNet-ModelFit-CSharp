@@ -96,13 +96,13 @@ namespace NeuralNetwork
         /// <summary>the number of hidden layers</summary>
         private int mNumLayers = 0;
 
-        /// <summary>the output layer unit activation function type</summary>
+        /// <summary>the output layer units activation function type</summary>
         private ActiveT mOutUnitType = ActiveT.kThreshold;
 
-        /// <summary>the output layer unit activation function slope value</summary>
+        /// <summary>the output layer units activation function slope value</summary>
         private double mOutUnitSlope = 1;
 
-        /// <summary>the output layer unit activation function amplify value</summary>
+        /// <summary>the output layer units activation function amplify value</summary>
         private double mOutUnitAmplify = 1;
 
         /// <summary>the weighted connections linking the network layers</summary>
@@ -114,13 +114,13 @@ namespace NeuralNetwork
         /// <summary>the input values for the layer activation functions</summary>
         private List<List<double>> mUnitInputs = new List<List<double>>();
 
-        /// <summary>the hidden layer unit activation function types</summary>
+        /// <summary>the hidden layer units activation function types</summary>
         private List<ActiveT> mActiveUnits = new List<ActiveT>();
 
-        /// <summary>the hidden layer unit activation function slope values</summary>
+        /// <summary>the hidden layer units activation function slope values</summary>
         private List<double> mActiveSlope = new List<double>();
 
-        /// <summary>the hidden layer unit activation function amplify values</summary>
+        /// <summary>the hidden layer units activation function amplify values</summary>
         private List<double> mActiveAmplify = new List<double>();
 
         /////////////////////////////////////////////////////////////////////
@@ -289,7 +289,7 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// The output unit activation type.
+        /// The output units activation type.
         /// </summary>
         /// 
         public ActiveT OutputUnitType
@@ -305,7 +305,7 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// The output layer unit activation function slope value.
+        /// The output layer units activation function slope value.
         /// </summary>
         /// 
         public double OutputUnitSlope
@@ -325,7 +325,7 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// The output layer unit activation function amplify value.
+        /// The output layer units activation function amplify value.
         /// </summary>
         /// 
         public double OutputUnitAmplify

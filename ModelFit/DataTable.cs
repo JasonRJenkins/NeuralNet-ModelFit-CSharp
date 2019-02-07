@@ -773,6 +773,10 @@ namespace Data.Table
                                         sValue.TrimStart(ws);   // left trim
                                         sValue.TrimEnd(ws);     // right trim
                                     }
+                                    else
+                                    {
+                                        sValue = "<blank>";
+                                    }
 
                                     mColumnNames.Add(sValue);
                                     mColIdx.Add(sValue, mCols);

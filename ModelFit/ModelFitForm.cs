@@ -327,12 +327,12 @@ namespace ModelFit
                     // load the CSV file containing the training data
                     try
                     {
-                        LoadData(fullFileName);
-
                         // when new data is aquired the model parameters must be set before we can fit a model
                         this.FitModelBtn.Enabled = false;
                         this.SaveToBtn.Enabled = false;
                         this.SaveNetworkBtn.Enabled = false;
+
+                        LoadData(fullFileName);
                     }
                     catch (System.IO.IOException ioEx)
                     {
@@ -342,28 +342,6 @@ namespace ModelFit
                     // reset the cursor
                     Cursor.Current = Cursors.Default;
                 }
-            }
-        }
-
-        /////////////////////////////////////////////////////////////////////
-
-        private void HeaderCkBox_CheckedChanged(object sender, EventArgs e)
-        {
-            HasHeader = HeaderCkBox.Checked;
-
-            mDataTab.HasHeader = HasHeader;
-
-            // re-load the CSV file (if selected) to reflect the change in header status
-            if (DataFile.Length > 0)
-            {
-                // display the wait cursor
-                Cursor.Current = Cursors.WaitCursor;
-
-                LoadData(DataFile);
-                PopulateVariableListBoxes();
-
-                // reset the cursor
-                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -437,23 +415,6 @@ namespace ModelFit
                 {
                     MessageBox.Show("You have not selected a response variable (Y).",
                                     "ModelFit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-        }
-
-        /////////////////////////////////////////////////////////////////////
-
-        private void XlistBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (PredictorIdx != -1 && ResponseIdx != -1)
-            {
-                // update the information text label
-                this.InfoLabel.Text = "You can now fit the model";
-
-                // enable the fit model button
-                if (this.FitModelBtn.Enabled == false)
-                {
-                    this.FitModelBtn.Enabled = true;
                 }
             }
         }
@@ -544,7 +505,49 @@ namespace ModelFit
                 }
             }
         }
-         
+
+        /////////////////////////////////////////////////////////////////////
+
+        private void HeaderCkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            HasHeader = HeaderCkBox.Checked;
+
+            mDataTab.HasHeader = HasHeader;
+
+            // re-load the CSV file (if selected) to reflect the change in header status
+            if (DataFile.Length > 0)
+            {
+                // display the wait cursor
+                Cursor.Current = Cursors.WaitCursor;
+
+                LoadData(DataFile);
+                PopulateVariableListBoxes();
+
+                // reset the cursor
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////
+
+        private void XlistBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PredictorIdx != -1 && ResponseIdx != -1)
+            {
+                // update the information text label
+                this.InfoLabel.Text = "You can now fit the model";
+
+                // enable the fit model button
+                if (this.FitModelBtn.Enabled == false)
+                {
+                    this.FitModelBtn.Enabled = true;
+                }
+            }
+
+            this.SaveToBtn.Enabled = false;
+            this.SaveNetworkBtn.Enabled = false;
+        }
+
         /////////////////////////////////////////////////////////////////////
 
         private void ExitBtn_Click(object sender, EventArgs e)
@@ -1029,6 +1032,8 @@ namespace ModelFit
                 this.tableDataGridView.DataSource = null;
                 this.XlistBox.Items.Clear();
                 this.YlistBox.Items.Clear();
+                this.PanelIterations.Text = "";
+                this.PanelNetError.Text = "";
 
                 // update the information text label
                 this.InfoLabel.Text = "Please select a data file";
@@ -1046,6 +1051,8 @@ namespace ModelFit
 
                 // update the information text label
                 this.InfoLabel.Text = "Please select the variables";
+                this.PanelIterations.Text = "";
+                this.PanelNetError.Text = "";
             }
         }
 

@@ -91,9 +91,9 @@ namespace ModelFit
             this.ExcelRadioBtn = new System.Windows.Forms.RadioButton();
             this.CSVRadioBtn = new System.Windows.Forms.RadioButton();
             this.ExcelOutputCkBox = new System.Windows.Forms.CheckBox();
+            this.tableDataGridView = new System.Windows.Forms.DataGridView();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.tableDataGridView = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OutAmpNumUpDwn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutSlopeNumUpDwn)).BeginInit();
@@ -110,9 +110,9 @@ namespace ModelFit
             ((System.ComponentModel.ISupportInitialize)(this.HidSlopeNumUpDwn)).BeginInit();
             this.AppStatusBar.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tableDataGridView)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tableDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // DataFileTBox
@@ -123,6 +123,7 @@ namespace ModelFit
             this.DataFileTBox.ReadOnly = true;
             this.DataFileTBox.Size = new System.Drawing.Size(429, 20);
             this.DataFileTBox.TabIndex = 49;
+            this.DataFileTBox.TabStop = false;
             this.ModelFitToolTip.SetToolTip(this.DataFileTBox, "displays the full name and path of the data file");
             // 
             // label1
@@ -847,6 +848,21 @@ namespace ModelFit
         "");
             this.ExcelOutputCkBox.UseVisualStyleBackColor = true;
             // 
+            // tableDataGridView
+            // 
+            this.tableDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableDataGridView.Location = new System.Drawing.Point(23, 84);
+            this.tableDataGridView.Name = "tableDataGridView";
+            this.tableDataGridView.ReadOnly = true;
+            this.tableDataGridView.Size = new System.Drawing.Size(947, 102);
+            this.tableDataGridView.TabIndex = 50;
+            this.tableDataGridView.TabStop = false;
+            this.ModelFitToolTip.SetToolTip(this.tableDataGridView, "displays the first 100 lines of the data file - the last two rows contain the min" +
+        " and max values");
+            // 
             // groupBox5
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -871,20 +887,6 @@ namespace ModelFit
             this.groupBox6.Size = new System.Drawing.Size(174, 67);
             this.groupBox6.TabIndex = 44;
             this.groupBox6.TabStop = false;
-            // 
-            // tableDataGridView
-            // 
-            this.tableDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tableDataGridView.Location = new System.Drawing.Point(23, 84);
-            this.tableDataGridView.Name = "tableDataGridView";
-            this.tableDataGridView.ReadOnly = true;
-            this.tableDataGridView.Size = new System.Drawing.Size(947, 102);
-            this.tableDataGridView.TabIndex = 50;
-            this.ModelFitToolTip.SetToolTip(this.tableDataGridView, "displays the first 100 lines of the data file - the last two rows contain the min" +
-        " and max values");
             // 
             // ModelFitForm
             // 
@@ -934,11 +936,11 @@ namespace ModelFit
             this.AppStatusBar.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tableDataGridView)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tableDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
